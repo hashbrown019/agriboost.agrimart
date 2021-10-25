@@ -21,7 +21,26 @@
 	<div class="x-padding">
 		<div class="x-white">
 			<h2 class="x-padding">Invoice</h2>
-			<div id="invoice" class="x-container x-padding" style="">
+			<span class="x-padding" id="inv_name">
+				Juan Dela Cruz 
+			</span> | 
+			<span id='inv_date' class="x-text-grey x-tiny"> Date</span>
+			<div class="x-container x-padding" style="">
+				<table class="x-table x-bordered">
+					<thead>
+						<th>Product</th>
+						<th>QTY</th>
+						<th>Price</th>
+						<th>Total</th>
+					</thead>
+					<tbody id="invoice">
+						<tr>
+							<td>asdad</td>
+							<td>asdad</td>
+							<td>asdad</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="x-contaienr x-padding">
 				<h4 class=" x-right">total : <b id="out_total"></b></h4>
@@ -36,6 +55,32 @@
 		</div>
 	</div>
 
+
+<!-- 					<div class="x-row">
+						<div class="x-border-dashed x-border-green x-row x-round" style="padding-left:10px;">
+							<div class="x-row">
+								<div class="x-col s8">
+									<b class="x-tiny">`+checked_out_demands[i].demands.crops[0].name+`</b>
+								</div>
+								<div class="x-col s4">
+									<span class="x-tiny">Delivery Date<br>`+checked_out_demands[i].demands.proposed_delivery_date+`</span>
+								</div>
+							</div>
+							<div class="x-row">
+								<div class="x-col s7">
+									<span class="x-tiny">Price per `+checked_out_demands[i].demands.crops[0].unit+` :</span><br>
+									<span class="x-tiny">Quantity/Volume :</span><br>
+									<span class="x-tiny">Item Total Price :</span><br>
+								</div>
+								<div class="x-col s2">
+									<span class="x-tiny"><b>`+checked_out_demands[i].demands.crops[0].crop_pricing.srp+`</b></span><br>
+									<span class="x-tiny"><b>`+checked_out_demands[i].demands.qty+`</b></span><br>
+									<span class="x-tiny"><b class='total_price'>`+item_price+`</b></span><br>
+								</div>
+							</div>
+						</div>
+					</div> -->
+
 	<script type="text/javascript">
 		let _USER_DATA_ = JSON.parse(url_args['data'])
 		let user_id = _USER_DATA_.users_details[0].id
@@ -43,6 +88,9 @@
 		var TOTAL_PRICE_DEMAND = 0
 
 
+		$ID('inv_name').innerHTML = _USER_DATA_.users_details[0].lname +"_"+ _USER_DATA_.users_details[0].fname
+		$ID('inv_date').innerHTML = $datetime()
+		check_out()
 
 		function to_check_out(){
 			goto("check_out.html?data="+url_args['data'])
@@ -51,7 +99,6 @@
 			goto("check_out_loading.html?data="+url_args['data'])
 
 		}
-		check_out()
 		function check_out(){		
 			$send({
 				action : "http://agrihub.agriboost.ph/api/check_out/demands",
@@ -113,30 +160,13 @@
 					var item_price = parseFloat(checked_out_demands[i].demands.crops[0].crop_pricing.srp)*parseFloat(checked_out_demands[i].demands.qty)
 					// wanakoksabot = item_price
 					list_demand = list_demand + `
-					<div class="x-row">
-						<div class="x-border-dashed x-border-green x-row x-round" style="padding-left:10px;">
-							<div class="x-row">
-								<div class="x-col s8">
-									<b class="x-tiny">`+checked_out_demands[i].demands.crops[0].name+`</b>
-								</div>
-								<div class="x-col s4">
-									<span class="x-tiny">Delivery Date<br>`+checked_out_demands[i].demands.proposed_delivery_date+`</span>
-								</div>
-							</div>
-							<div class="x-row">
-								<div class="x-col s7">
-									<span class="x-tiny">Price per `+checked_out_demands[i].demands.crops[0].unit+` :</span><br>
-									<span class="x-tiny">Quantity/Volume :</span><br>
-									<span class="x-tiny">Item Total Price :</span><br>
-								</div>
-								<div class="x-col s2">
-									<span class="x-tiny"><b>`+checked_out_demands[i].demands.crops[0].crop_pricing.srp+`</b></span><br>
-									<span class="x-tiny"><b>`+checked_out_demands[i].demands.qty+`</b></span><br>
-									<span class="x-tiny"><b class='total_price'>`+item_price+`</b></span><br>
-								</div>
-							</div>
-						</div>
-					</div>
+
+						<tr>
+							<td>`+checked_out_demands[i].demands.crops[0].name+`</td>
+							<td>`+checked_out_demands[i].demands.crops[0].qty+`.</td>
+							<td>`+checked_out_demands[i].demands.crops[0].crop_pricing.srp+`</td>
+							<td>`+item_price+`</td>
+						</tr>
 					`
 					wanakoksabot = wanakoksabot + item_price
 				}else{
