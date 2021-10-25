@@ -46,11 +46,10 @@
 				</div>
 			</div><br><br>
 			<div class="x-row x-padding">
-				<span class="x-text-green x-row" onclick="to_crate()"><span class="fa fa-shopping-cart"></span> My Crate</span><br>
-				<span class="x-text-green x-row" onclick="to_check_out()"><span class="fa fa-ticket"></span> My Orders</span>
-				<hr>
-				<span class="x-text-green x-row"><span class="fa fa-question-circle-o"></span> Help</span><hr>
-				<span class="x-text-red x-row" onclick="to_login()"><span class="fa fa-power-off"></span> Sign Out</span>
+				<div class="x-container" style="bottom: 0vh;">
+					<span class="x-text-green x-row"><span class="fa fa-question-circle-o"></span> Help</span><hr>
+					<span class="x-text-red x-row" onclick="to_login()"><span class="fa fa-power-off"></span> Sign Out</span>
+				</div>
 			</div>
 		</div>
         <header class="x-text-white themecolorheader" style="width: 100vw; z-index: 1;position: fixed;min-height: 20%;">
@@ -276,6 +275,7 @@
 
 		let CROP_DATA
 		$ID('intro_date').style.display='block' 
+		println($ID('intro_date_btn'))
 
 		function to_check_out(){goto("check_out.html?data="+url_args['data'])}
 		function to_crate(){goto("crate.html?data="+url_args['data'])}
