@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<head>
+		<title>Register | Trader</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/Brorn.min.js"></script>
+		<script type="text/javascript" src="js/Variables.js"></script>
+
+		<link rel="stylesheet" href="css/x.css">
+		<link rel="stylesheet" href="css/other.css">
+		<link rel="stylesheet" href="css/loader.css">
+		<link rel="stylesheet" href="css/css">
+		<link rel="stylesheet" href="css/chip.css">
+		<link rel="stylesheet" href="css/dropzone.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+				integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+				crossorigin=""/>
+
+		<script src="js/leaflet/jquery.min.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+				integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+				crossorigin=""></script>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+		<style type="text/css">
+			#head_band{
+				background-image: url(./img/products/headband.png);;
+				background-repeat: no-repeat;
+				background-size: auto;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+			#mapid { height: 180px; }
+		</style>
+	</head>
+	<body>
+		<header id="" class="x-display-container x-green" style="height:80px;">
+			<a href="Login_screen.html"><h3 class="x-display-left fa fa-arrow-left x-padding"></h3></a>
+			<h3 class="x-display-middle">Sign Up</h3>
+		</header>
+		<br>
+		<div class="x-container">
+			<div class="x-container x-round">
+				<h3>Business Details</h3>
+				<span class="x-text-red x-small">Required Fields *</span><hr>
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Name of Business/Institution <b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_name_business" placeholder="Juan's Green Store">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Business Permit No <b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_business_permit" placeholder="09123-1213*">
+			</div>
+
+			<div class="x-padding"><span class="x-text-green x-small">Business Address <b class="x-text-red">*</b></span><br></div>
+			<div id="map_cont" class="x-container x-round x-padding x-round-xlarge">
+				<div id="mapid"></div>
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Region and Province<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_business_address">
+				
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Municipality/City <b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_muni">
+				
+
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Barangay / Road or Street<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_brgy">
+				
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Nature of Business<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_nature">
+
+			</div>
+		</div>
+		<div class="x-container x-row">
+			<div class="x-container x-round">
+				<h3>Business Owner Details</h3>
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">First Name<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_fname" __placeholder="Juan's Green Store">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Middle Name<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_mname" __placeholder="09123-1213*">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Last Name<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_lname" __placeholder="Agusan Del Norte">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Birthday<b class="x-text-red">*</b></span><br>
+				<input type="date" class="field_login x-input x-border x-round-large" id="reg_bday" __placeholder="Butuan">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Gender<b class="x-text-red">*</b></span><br>
+				<select type="" class="field_login x-input x-border x-round-large" id="reg_gender" placeholder="CARAGA - XIII">
+					<option value="Male">Male</option>
+					<option value="Female">Female</option>
+					<option value="Disclosed">Prefer not to say</option>
+				</select>
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Contact<b class="x-text-red">*</b></span><br>
+				<input required type="" class="field_login x-input x-border x-round-large" id="reg_contact" __placeholder="Papa">
+			</div><hr>
+			<div class="x-container x-round">
+				<button type="submit" class="x-btn x-block x-round-xlarge x-green" onclick="register()">Next</button>
+			</div><br>
+			<div class="x-container x-row x-center">
+				<span class="x-col l6 m6 s6 x-left x-tiny x-right">
+					Already registered?
+					<a class="x-text-green" href="Login_screen.html">Sign In</a>
+				</span>
+			</div>
+		</div>
+
+		<br><br><br>
+		<!-- ------------------------------------------------------- -->
+		<div id="fin_reg" class="x-modal">
+			<div class="x-modal-content x-round-large">
+				<div class="x-container">
+					<span onclick="$ID('fin_reg').style.display='none'"
+					class="x-button x-display-topright">&times;</span>
+					<div class="x-container x-round">
+						<h3>Complete your Password</h3>
+					</div>
+					<div class="x-container x-round" id="reg_finalize_code">
+						<p> We have sent a Confirmation code to your provided mobile number</p>
+						<span class="x-text-green x-small">SMS Code<b class="x-text-red">*</b></span><br>
+						<input onkeyup="code_verify(this.value)" type="number" class="field_login x-input x-border x-round-large" id="reg_code">
+					</div>
+					<div class="x-row" id="reg_finalize" style="display:none;">
+						<div class="x-container x-round">
+							<span onkeyup="check_fields()" class="x-text-green x-small">Email Address<b class="x-text-red">*</b></span><br>
+							<input type="email" class="field_login x-input x-border x-round-large" id="reg_email" placeholder="Email@gmail.com">
+						</div>
+						<div class="x-container x-round">
+							<span onkeyup="" class="x-text-green x-small">Password<b class="x-text-red">*</b></span><br>
+							<input onkeyup="check_fields()" type="password" class="field_login x-input x-border x-round-large" id="reg_passwd" >
+							<span class="x-text-red" id="pass_note"></span>
+						</div><hr>
+
+						<div class="x-container x-row x-small">
+							<span class=" x-text-grey"><input type="checkbox"  name="" onchange="get_terms_agree(this.checked)">
+								<span class="x-padding"> By joining, you accept the
+									<a class="x-text-green" href="https://facebook.com">Privacy Policy </a>and 
+									<a class="x-text-green" href="https://facebook.com">Terms of Use </a></span></span>
+						</div><br>
+						<div class="x-container x-round">
+							<button disabled id='reg_btn' class="x-btn x-block x-round-xlarge x-green" onclick="register_fin()">Register</button>
+						</div>
+					</div>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
+		<!-- ------------------------------------------------------- -->
+		<div id="error_reg" class="x-modal">
+			<div class="x-modal-content x-round-large">
+				<div class="x-container">
+					<span onclick="$ID('error_reg').style.display='none'"
+					class="x-button x-display-topright">&times;</span>
+					<div class="x-container x-round">
+						<h3 class="x-text-red">Registration Failed</h3>
+						<p>Please review your details and fill the fields correctly. dont leave the field blank</p>
+					</div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var twilio_url_api = "https://api.twilio.com/2010-04-01/Accounts/{AccountSid}/Messages.json"
+		var reg_trader = "http://agrihub.agriboost.ph/api/registration/mobile"
+		var marker = undefined
+		// function set_dropdown1(){}
+		var verif_code = $randint(9999999)
+
+		function check_fields(){
+			var passwd = $ID('reg_passwd').value
+			if(passwd.length > 9){
+				$ID('pass_note').innerHTML = ""
+			}
+			else{
+				$ID('pass_note').innerHTML = "Please provide more than (9) characters"
+			}
+		}
+
+		function get_terms_agree(ag){
+			if(ag){$ID('reg_btn').disabled = false }
+			else{$ID('reg_btn').disabled = true }
+		}
+
+		function code_verify(code){
+			if(code.length > 6){
+				if(parseInt(verif_code)==parseInt(code)){
+					$ID("reg_finalize").style.display = "block"
+					$ID("reg_finalize_code").style.display = "none"
+				}
+			}
+		}
+		function register(){
+			$ID('fin_reg').style.display='block'
+
+			$send({
+				method : POST,
+				action : "http://agrihub.agriboost.ph/api/sms/registration/verification",
+				data : JSON.stringify({
+					'mobile_number': $ID("reg_contact").value,
+					'message' : 'Your verification code for Agrimart is ['+verif_code+']'
+				}),
+				a_sync : false,
+				func : function(res){
+
+				},
+				headers : {
+					"Content-Type" : "application/json"
+				},
+			})
+		}
+		
+		function register_fin(){
+			var struct_reg = {
+				"email": $ID("reg_email").value,
+				"password": $ID("reg_passwd").value,
+				"user_type": "Trader",
+				"terms": true,
+				"userDetails":{
+					"fname": $ID("reg_fname").value,
+					"lname": $ID("reg_lname").value,
+					"sex": $ID("reg_gender").value,
+					"bday": $ID("reg_bday").value,
+					"phone": $ID("reg_contact").value
+				},
+				"entityDetails": {
+					"entity_name": $ID("reg_name_business").value,
+					"nature_of_entity": $ID("reg_nature").value,
+					"business_permit_no": $ID("reg_business_permit").value,
+					"province": $ID("reg_business_address").value,
+					"city": $ID("reg_muni").value,
+					"region": "Caraga XIII",
+					"brgy": $ID("reg_brgy").value 
+				}
+			}
+			$send({
+				method : POST,
+				action : reg_trader,
+				data : JSON.stringify(struct_reg),
+				a_sync : false,
+				func : function(res){
+					println("CONNECTION")
+					println(CONNECTION)
+					println("CONNECTION")
+					println(JSON.parse(res))
+					alert('Registration has been requested')
+					goto("Login_screen.html")
+				},
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				err : function(){$ID("error_reg").style.display="block"}
+			})
+		}
+		// --------------------------------------------------------------------------------------------
+		try{
+			var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: '<a href="http://www.agriboost.ph">Agriboost</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'pk.eyJ1IjoiZGlvYW1lIiwiYSI6ImNrbGo1ZDc1aDAxZTQybnBoc2tpZGcxOWoifQ.90lp0SPxVC4Kz113q_Wn9g'
+			}).addTo(mymap);
+			let samp = {"lat":8.945209,"lng":125.538939}
+			mymap.setView([samp.lat, samp.lng], 13);
+
+
+			// var popup = L.popup();
+
+			function onMapClick(e) {
+				if(marker != undefined){mymap.removeLayer(marker)}
+				// popup
+				// 	.setLatLng(e.latlng)
+				// 	.setContent("You clicked the map at " + e.latlng.toString())
+				// 	.openOn(mymap);
+
+				marker = L.marker(e.latlng).addTo(mymap);
+				println(e.latlng.lat)
+				$.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+e.latlng.lat+'&lon='+e.latlng.lng, function(data){
+					console.log(data.address);
+					$ID("reg_business_address").value = data.address.region + ', ' +data.address.state
+					$ID("reg_muni").value = data.address.city
+					var addr = data.address.village + " ," 
+						+data.address.quarter+" ,"
+						+data.address.road + " ,"
+						+data.address.tourism + " ,"
+						+data.address.leisure + " ,"
+					$ID("reg_brgy").value = addr.split("undefined ,").join("")
+				});
+			}
+			mymap.on('click', onMapClick);
+		}
+		catch(e){
+			$ID("map_cont").style.display = "none"
+		}
+
+	</script>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<head>
+		<title>Create | Trader</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/Brorn.min.js"></script>
+		<script type="text/javascript" src="js/Variables.js"></script>
+
+		<link rel="stylesheet" href="css/x.css">
+		<link rel="stylesheet" href="css/scroll_bar.css">
+		<link rel="stylesheet" href="css/other.css">
+		<link rel="stylesheet" href="css/loader.css">
+		<link rel="stylesheet" href="css/css">
+		<link rel="stylesheet" href="css/chip.css">
+		<link rel="stylesheet" href="css/dropzone.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<style type="text/css">
+			#head_band{
+				background-image: url(./img/products/headband.png);;
+				background-repeat: no-repeat;
+				background-size: auto;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="" class="x-container x-green" style="height:80px;">
+			<br><br>
+			<div class="x-container x-row">
+				<div class="x-col l2 m2 s2">
+					<span class="fa fa-arrow-left" onclick="to_market_demand()"></span>
+				</div>
+				<!-- <div class="x-col m1 l1 s1">
+					<img style="max-width: 100%;" src="./img/products/basket.png">
+				</div> -->
+				<div class="x-col m7 l7 s7">
+					<span class="x-large">My Orders<span class="fa fa-shopping-cart"></span></span>
+				</div>
+				<div class="x-col l3 m3 s3">
+					<!-- <span class="x-white x-round-xlarge x-tiny" id="todate"></span> -->
+				</div>
+			</div>
+		</header>
+		<div id="pre_order_list" class=" x-row">
+		</div>
+
+		<div id="list_demand_check_outs" class="x-modal"  style="">
+			<div class="x-modal-content x-round-large">
+				<span onclick="$ID('list_demand_check_outs').style.display='none' "class="x-button x-display-topright x-round-large x-red fa fa-sign-out"></span>
+				<span class="x-padding x-large">
+					Order Details<br>
+					<span class="x-small x-padding">
+						<span>Total Price</span>
+						<b id="item_total_price"></b>
+					</span>
+				</span>
+				<div id="demands_out" class="x-container x-padding">
+					<div class="x-center">
+						<h3>No Records</h3>
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
+		<br><br>
+		<script type="text/javascript">
+			let _USER_DATA_ = JSON.parse(url_args['data'])
+			let user_id = _USER_DATA_.users_details[0].id
+			let TOKEN = _USER_DATA_.token
+
+			function to_market_demand(){
+				goto("market_demand.html?data="+url_args['data'])
+			}
+			get_orders()
+			function get_orders(){
+				var po_list = ""
+				var req_cred = {
+						"user_id": user_id,
+						// "batch_tracking_number": "20211013-L6qU8qziwDzmH"
+					}
+				println(req_cred)
+				$send({
+					action : "http://agrihub.agriboost.ph/api/view/batch/ordered",
+					data : JSON.stringify(req_cred),
+					method : POST,
+					headers:{
+						"Accept":"application/json",
+						"Content-Type":"application/json",
+						"Authorization" : "Bearer "+TOKEN
+					},
+					func : function(res){
+						var item = JSON.parse(res)
+						for (var i = 0; i < item.length; i++) {
+							var ent = item[i]
+							println(ent)
+							if(ent.fk_users_acc_id==user_id){
+								var total_all = 0
+								// alert(ent.checked_out_demands.length)
+								// for (var i = 0; i < ent.checked_out_demands.length; i++) {
+								// 	ent.checked_out_demands[i]
+								// 	total_all = total_all +(parseFloat(ent.checked_out_demands[i].demands.crops[0].crop_pricing.srp) *parseFloat(ent.checked_out_demands[i].demands.qty))
+								// }
+								po_list = po_list +`
+								<div class="x-padding x-row">
+									<div class="x-padding x-card x-row">
+										<div class="x-row">
+											<div class="x-col s6">
+												<span class="x-small">Pre-Order # :<b>`+ent.id+ent.fk_users_acc_id+`-`+ent.checked_out_demands.length+`</b></span><br>
+												<span class="x-tiny x-text-grey">Commodity :<b class="x-text-black">`+ent.checked_out_demands.length+`</b></span><br>
+											</div>
+											<div class="x-col s6">
+												<span class="x-tiny x-text-grey">Tracking Number # :<b class="x-micro">`+ent.batch_tracking_number+`</b></span><br>
+												<button class="x-right x-green x-round x-btn x-tiny" onclick="get_my_demands('`+ent.batch_tracking_number+`')">View Details</button>
+											</div>
+										</div>
+									</div>
+								</div>`
+							}
+						}
+						$ID("pre_order_list").innerHTML = po_list
+					}
+				})
+			}
+
+
+			function get_my_demands(batch_num){
+				println("------")
+				$send({
+					action : "http://agrihub.agriboost.ph/api/view/specific/batch/ordered_list",
+					data : JSON.stringify({
+						"fk_batch_tracking_number": batch_num
+					}),
+					method : POST,
+					func : function(res){
+						var demands = JSON.parse(res)
+						println(demands)
+						println('demands')
+						var list_demand = ""
+						var TOTAL_PRICE_DEMAND = 0
+						for (var i = 0; i < demands.length; i++) {
+							TOTAL_PRICE_DEMAND = TOTAL_PRICE_DEMAND + (demands[i].demands.crops[0].crop_pricing.srp*demands[i].demands.qty)
+							list_demand = list_demand + `
+							<div class="x-padding x-row">
+								<div class="x-card x-row x-round x-padding">
+									<div class="x-row x-bottombar">
+										<div class="x-col s8">
+											<b class="x-tiny">`+demands[i].demands.crops[0].name+`</b>
+										</div>
+										<div class="x-col s4">
+											<span class="x-tiny">Delivery Date<br>`+demands[i].demands.proposed_delivery_date+`</span>
+										</div>
+									</div>
+									<div class="x-row">
+										<div class="x-col s3">
+											<img src="./img/products/crops/`+demands[i].demands.crops[0].id+`.png" style="max-width: 100%;">
+										</div>
+										<div class="x-col s7">
+											<span class="x-tiny">Price per `+demands[i].demands.crops[0].unit+` :</span><br>
+											<span class="x-tiny">Quantity/Volume :</span><br>
+										</div>
+										<div class="x-col s2">
+											<span class="x-tiny"><b>`+demands[i].demands.crops[0].crop_pricing.srp+`</b></span><br>
+											<span class="x-tiny"><b>`+demands[i].demands.qty+`</b></span><br>
+										</div>
+									</div>
+								</div>
+							</div>
+							`
+						
+						}
+						$ID("demands_out").innerHTML = list_demand
+						$ID('list_demand_check_outs').style.display='block';
+						$ID('item_total_price').innerHTML=TOTAL_PRICE_DEMAND;
+					},
+					headers:{
+						"Accept":"application/json",
+						"Content-Type":"application/json",
+						"Authorization" : "Bearer "+TOKEN
+					}
+				})
+			}
+
+		</script>
+	</body>
+</html>

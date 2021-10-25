@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login screen</title>
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src *"> -->
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:"> -->
+	<meta http-equiv="Content-Security-Policy" content="img-src * data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';">
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/Brorn.min.js"></script>
+
+	<link rel="stylesheet" href="css/x.css">
+	<link rel="stylesheet" href="css/other.css">
+	<link rel="stylesheet" href="css/loader.css">
+	<link rel="stylesheet" href="css/css">
+	<link rel="stylesheet" href="css/chip.css">
+	<link rel="stylesheet" href="css/dropzone.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<style type="text/css">
+		#head_band{
+			background-image: url(./img/products/headband.png);;
+			background-repeat: no-repeat;
+			background-size: auto;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+	</style>
+</head>
+	<body>
+		<header id="head_band" class="display-container " style="height:150px;">
+		</header>
+		<center>
+			<img class="" src="img/products/agrimart.png" style="max-width: 30%;">
+		</center>
+		<br>
+		<div class="x-container x-row">
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Email Address</span><br>
+				<input onkeyup="check_fields()" type="email" class="field_login x-input x-border x-round-xxlarge" id="log_email" placeholder="mail@email.com">
+			</div>
+			<div class="x-container x-round">
+				<span class="x-text-green x-small">Password</span><br>
+				<input onkeyup="check_fields()" type="password" class="field_login x-input x-border x-round-xxlarge" id="log_password" placeholder="********"><br>
+			<!-- 	<div class="x-container x-row">
+					<span class="x-col l6 m6 s6 x-left x-tiny"><input type="checkbox" name=""><span class="x-padding"> Remember</span></span>
+					<span class="x-col l6 m6 s6 x-right x-tiny x-text-green">Forgot Password</span>
+				</div> -->
+			</div><hr>
+			<div class="x-center">
+				<div class="x-container x-round">
+					<button id="login_btn" class="x-btn x-block x-round-xlarge x-green" onclick="login()">Sign In</button>
+				</div><br>
+				<span class="x-tiny x-text-grey x-center">Or Login with</span>
+				<div class="x-container x-round">
+					<button class="x-btn x-block x-round-xlarge x-yellow" onclick=""><span class="fa fa-google"></span> Login with Google</button>
+				</div><br>
+				<div class="x-container x-round">
+					<button class="x-btn x-block x-round-xlarge x-blue" onclick=""><span class="fa fa-facebook-square"></span> Log In with Facebook</button>
+				</div><br>
+				<div class="x-container x-row">
+					<span class="x-col l6 m6 s6 x-left x-small">Dont Have an Account</span>
+					<span class="x-col l6 m6 s6 x-right x-small x-text-green"><a href="Sign_up_1.html">Sign Up</a></span>
+				</div>
+			</div>
+		</div><br><br><br>
+		<!-- ------------------------------------------------------- -->
+		<div id="error_login" class="x-modal"  style="">
+			<div class="x-modal-content x-round-large">
+				<div class="x-container x-padding">
+					<span onclick="$ID('error_login').style.display='none' "
+					class="x-button x-display-topright x-round-large x-red fa fa-sign-out"></span>
+					<h3><b class="x-text-red">Login Failed</b></h3>
+					<span class="x-small">
+						It seems that there no records for that creadentials, please check the spelling and try again
+					</span>
+				</div><hr>
+				<div class="x-row x-center">
+					<span class="x-col l6 m6 s6 x-left x-small">Dont Have an Account?</span>
+					<span class="x-col l6 m6 s6 x-right x-small x-text-green"><a href="Sign_up_1.html">Sign Up</a></span>
+				</div>
+				<br>
+			</div>
+		</div>
+	</body>
+	<!-- <script src="js/login.js" type="text/javascript"></script> -->
+	<script  type="text/javascript">
+		function check_fields(){
+			// var email = $ID("log_email").value
+			// var passwd = $ID("log_password").value
+			// if(email.includes("@") && email.includes(".com")){
+			// 	alert("OOK")
+			// }
+		}
+
+		function login(){
+			//"email": "trader@gmail.com",
+			//"password": "trader@gmail.com"
+			var log ={
+			    "email": $ID("log_email").value,
+			    "password": $ID("log_password").value
+			}
+			println(log)
+			$send({
+				method : POST,
+				action : "http://agrihub.agriboost.ph/api/login/mobile/trader?fbclid=IwAR0riIZGQCb_CtXz-xeFl36dg10PRffI6Uu8l6fqz6hPs1zJBfSsauH-zfg",
+				// action : "http://agriboost.ph/api/login/mobile/trader", 
+				data : $DATA(log),
+				func : function(res){
+					var user_data = JSON.parse(res)
+					println(Object.hasOwnProperty('token'))
+					if(user_data.hasOwnProperty('token')){
+						println("Login")
+						goto("market_demand.html?data="+res)
+					}
+					else{
+						println("ERROR")
+						$ID('error_login').style.display='block'
+					}
+
+				},
+				// headers : {
+				// 	// "Accept" : "application/json",
+				// 	// "Content-Type" : "application/json",
+				// 	"Access-Control-Allow-Origin" : "*"
+				// }
+			})
+
+		}	
+	</script>
+</html>

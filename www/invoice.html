@@ -1,0 +1,161 @@
+<html>
+
+<head>
+	<title>Invoice | farmer</title>
+	<link rel="stylesheet" href="css/x.css">
+	<!-- <link rel="stylesheet" href="css/other2.css"> -->
+	<link rel="stylesheet" href="css/other.css">
+	<link rel="stylesheet" href="css/loader.css">
+	<link rel="stylesheet" href="css/css">
+	<link rel="stylesheet" href="css/chip.css">
+	<link rel="stylesheet" href="css/dropzone.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,600,700&amp;lang=en">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="js/Brorn.min.js"></script>
+
+</head>
+
+<body style="background-color: #9ACC00;">
+	<div class="x-padding">
+		<div class="x-white">
+			<h2 class="x-padding">Invoice</h2>
+			<div id="invoice" class="x-container x-padding" style="">
+			</div>
+			<div class="x-contaienr x-padding">
+				<h4 class=" x-right">total : <b id="out_total"></b></h4>
+			</div>
+			<div class="x-container x-row x-center">
+				<img style="width: 20%; margin-top: 30px;" src="img/products/agrimart.png">        
+			</div>
+			<div class="x-container x-row">
+				<span class="x-left" onclick="print()">Download</span>
+				<span class="x-right" onclick="to_loading()">Continue</span>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		let _USER_DATA_ = JSON.parse(url_args['data'])
+		let user_id = _USER_DATA_.users_details[0].id
+		let TOKEN = _USER_DATA_.token
+		var TOTAL_PRICE_DEMAND = 0
+
+
+
+		function to_check_out(){
+			goto("check_out.html?data="+url_args['data'])
+		}
+		function to_loading(){
+			goto("check_out_loading.html?data="+url_args['data'])
+
+		}
+		check_out()
+		function check_out(){		
+			$send({
+				action : "http://agrihub.agriboost.ph/api/check_out/demands",
+				method : POST,
+				data : JSON.stringify({
+					"user_id": user_id.toString(),
+					"delivery_method": "Pick_up"
+				}),
+				headers:{
+					"Accept":"application/json",
+					"Content-Type":"application/json",
+					"Authorization" : "Bearer "+TOKEN
+				},
+				func : function (res) {
+					var batch_tracking_number =JSON.parse(res).batch_tracking_number
+					println("check out :")// body...
+					println(batch_tracking_number)// body...
+					get_check_out_list(batch_tracking_number)
+
+				}
+			})
+		}
+
+
+		function get_check_out_list(batch_tracking_number){
+			$send({
+					action : "http://agrihub.agriboost.ph/api/view/check_out/demands",
+					// action : "http://agrihub.agriboost.ph/api/view/specific/demands",
+					data : JSON.stringify({
+			            "user_id": user_id.toString(),
+			            "batch_tracking_number":batch_tracking_number
+			        }),
+					method : POST,
+					func : function(res){
+						var demands = JSON.parse(res)
+						println("get_check_out_list :" + demands)
+						summary_get_my_demands(demands)
+					},
+					headers:{
+						"Accept":"application/json",
+						"Content-Type":"application/json",
+						"Authorization" : "Bearer "+TOKEN
+					}
+				})
+		}
+
+		function summary_get_my_demands(res){
+			var demands = res
+			var list_demand = ""
+			var wanakoksabot = 0
+			println(demands)
+			println("================")
+			for (var i = 0; i < demands[0].checked_out_demands.length; i++) {
+				if(demands[0].fk_users_acc_id==user_id){
+					println(demands[i])
+					checked_out_demands = demands[0].checked_out_demands
+					// TOTAL_PRICE_DEMAND = TOTAL_PRICE_DEMAND + (demands[i].crops[0].crop_pricing.srp*demands[i].qty)
+					TOTAL_PRICE_DEMAND = TOTAL_PRICE_DEMAND + (parseFloat(checked_out_demands[i].demands.crops[0].crop_pricing.srp)*parseFloat(checked_out_demands[i].demands.qty))
+					var item_price = parseFloat(checked_out_demands[i].demands.crops[0].crop_pricing.srp)*parseFloat(checked_out_demands[i].demands.qty)
+					// wanakoksabot = item_price
+					list_demand = list_demand + `
+					<div class="x-row">
+						<div class="x-border-dashed x-border-green x-row x-round" style="padding-left:10px;">
+							<div class="x-row">
+								<div class="x-col s8">
+									<b class="x-tiny">`+checked_out_demands[i].demands.crops[0].name+`</b>
+								</div>
+								<div class="x-col s4">
+									<span class="x-tiny">Delivery Date<br>`+checked_out_demands[i].demands.proposed_delivery_date+`</span>
+								</div>
+							</div>
+							<div class="x-row">
+								<div class="x-col s7">
+									<span class="x-tiny">Price per `+checked_out_demands[i].demands.crops[0].unit+` :</span><br>
+									<span class="x-tiny">Quantity/Volume :</span><br>
+									<span class="x-tiny">Item Total Price :</span><br>
+								</div>
+								<div class="x-col s2">
+									<span class="x-tiny"><b>`+checked_out_demands[i].demands.crops[0].crop_pricing.srp+`</b></span><br>
+									<span class="x-tiny"><b>`+checked_out_demands[i].demands.qty+`</b></span><br>
+									<span class="x-tiny"><b class='total_price'>`+item_price+`</b></span><br>
+								</div>
+							</div>
+						</div>
+					</div>
+					`
+					wanakoksabot = wanakoksabot + item_price
+				}else{
+					continue;
+				}
+				
+			}
+			// var total_yawa = 0
+			// var yawa = $CLASS("total_price")
+			// for (var i = 0; i < yawa.length; i++) {
+			// 	alert(parseFloat(yawa[i].innerHTML))
+			// 	total_yawa = total_yawa +(parseFloat(yawa[i].innerHTML))
+			// }
+			$ID("out_total").innerHTML = wanakoksabot
+			$ID("invoice").innerHTML = list_demand
+			// check_out()
+		
+		}
+	</script>
+</body>
+
+</html>

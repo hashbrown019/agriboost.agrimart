@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<head>
+		<title>Create | Trader</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/Brorn.min.js"></script>
+		<script type="text/javascript" src="js/Variables.js"></script>
+
+		<link rel="stylesheet" href="css/x.css">
+		<link rel="stylesheet" href="css/scroll_bar.css">
+		<link rel="stylesheet" href="css/other.css">
+		<link rel="stylesheet" href="css/loader.css">
+		<link rel="stylesheet" href="css/css">
+		<link rel="stylesheet" href="css/chip.css">
+		<link rel="stylesheet" href="css/dropzone.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<style type="text/css">
+			#head_band{
+				background-image: url(./img/products/headband.png);;
+				background-repeat: no-repeat;
+				background-size: auto;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="" class="x-container x-green" style="height:80px;">
+			<br><br>
+			<div class="x-container x-row">
+				<div class="x-col l2 m2 s2">
+					<span class="fa fa-arrow-left" onclick="to_market_demand()"></span>
+				</div>
+				<!-- <div class="x-col m1 l1 s1">
+					<img style="max-width: 100%;" src="./img/products/basket.png">
+				</div> -->
+				<div class="x-col m7 l7 s7">
+					<span class="x-large">My Crate list <span class="fa fa-shopping-cart"></span></span>
+				</div>
+				<div class="x-col l3 m3 s3">
+					<!-- <span class="x-white x-round-xlarge x-tiny" id="todate"></span> -->
+				</div>
+			</div>
+		</header>
+		<!-- -------------------------------------------------------------------- -->
+		<div id="demands" class="x-row crate_pages" style="display: block">
+			
+		</div>
+		<!-- ----------------------------------------------------------------------- -->
+		<div id="del_method" class="x-row crate_pages" style="display: none">
+			<div class="x-padding">
+				<h4>Delivery Info</h4>
+			</div>
+			<!-- <div class="x-container x-padding">
+				<div class="x-col s6">
+					<input name="fav_language" type="radio" value="true">
+					Pick-Up
+				</div>
+			</div> -->
+			<div class="x-container x-padding">
+				<span>Full Name</span>
+				<input id="ord_fullname" class="order_forms x-input x-round-large x-border" type="" name="" disabled>
+				<span>Contact Number</span>
+				<input id="ord_contact" class="order_forms x-input x-round-large x-border" type="" name="" disabled>
+				<span>Email Address</span>
+				<input id="ord_email" class="order_forms x-input x-round-large x-border" type="" name="" disabled>
+			</div>
+			<div class="x-container x-padding">
+				<span class="x-small">Payment Method : <b>Cash On Delivery</b></span><br>
+			</div>
+		</div>
+		<!-- ----------------------------------------------------------------------- -->
+		<div id="summary" class="x-row crate_pages" style="display: none">
+			<div class="x-padding">
+				<h4>Summary</h4>
+			</div>
+			<div id="summary_list"></div>
+		</div>
+		<!-- ---------------------------------------------------------------------------------- -- -->
+		<div class="x-container x-row x-padding x-card x-round x-center">
+			<div class="x-padding">
+				<span class="x-padding">Total</span>
+				<b id="total_price_demand" class="x-padding x-border-dashed x-round">0000.00</b><br>
+			</div>
+
+			<div id="crate_next" class="x-container">
+				<span class="x-small x-text-green">Click continue to proceed next step</span><br>
+				<button disabled id="cont_btn" class="x-padding x-round-large x-green x-btn x-block" onclick="turn_crate_page()">
+					Continue
+				</button>
+			</div>
+			<div id="crate_out" class="x-container" style="display:none">
+				<span class="x-tiny x-text-grey">
+					<input type="checkbox" name="" onchange="get_terms_agree(this.checked)">
+					By completing this order, I have have read and agree to the 
+					<a>Terms of Use </a> and <a>Privacy Policy</a>
+				</span><br>
+				<button id="check_out_btn" class="x-padding x-round-large x-green x-btn x-block" onclick="check_out()" disabled>
+					Place Order <span class="fa fa-arrow-right"></span>
+				</button>
+			</div>
+		</div>
+		<br><br>
+		<script type="text/javascript">
+			let PAGE = 0
+			let _USER_DATA_ = JSON.parse(url_args['data'])
+			let user_id = _USER_DATA_.users_details[0].id
+			let TOKEN = _USER_DATA_.token
+			let TOTAL_PRICE_DEMAND = 0
+			let for_invoice = undefined
+			set_user_det()
+			println(_USER_DATA_)
+			function set_user_det(){
+				$ID('ord_fullname').value = _USER_DATA_.users_details[0].fname + " " + _USER_DATA_.users_details[0].lname
+				$ID('ord_contact').value = _USER_DATA_.users_details[0].phone
+				$ID('ord_email').value = ""
+			}
+
+			function get_terms_agree(ag){
+				if(ag){$ID('check_out_btn').disabled = false }
+				else{$ID('check_out_btn').disabled = true }
+			}
+
+			function check_out(){
+				goto("invoice.html?data="+url_args['data']+"&for_invoice="+for_invoice)
+			}
+
+			function to_market_demand(){
+				goto("market_demand.html?data="+url_args['data'])
+			}
+
+			function turn_crate_page(){
+				PAGE = PAGE + 1
+				println(PAGE)
+				$CLASS("crate_pages")[PAGE].style.display="block"
+				$CLASS("crate_pages")[PAGE-1].style.display="none"
+				if(PAGE==2){
+					$ID('crate_next').style.display = "none"
+					$ID('crate_out').style.display = "block"
+				}else{
+					$ID('crate_next').style.display = "block"
+					$ID('crate_out').style.display = "none"
+				}
+			}
+			// $ID("todate").innerText = $datetime()
+			get_my_demands()
+			function get_my_demands(){
+				println("------")
+				$send({
+					// action : "http://agrihub.agriboost.ph/api/view/specific/demands",
+					action : "http://agrihub.agriboost.ph/api/view/specific/demands/mycrate",
+					data : JSON.stringify({
+			            "user_id": user_id.toString(),
+			            "delivery_method":"delivery"
+			        }),
+					method : POST,
+					func : function(res){
+						var demands = JSON.parse(res)
+						summary_get_my_demands(demands)
+						var list_demand = ""
+						println("================")
+						println(demands)
+						println("================")
+						if(demands.length>0){
+							$ID('cont_btn').disabled=false;
+						}
+						for (var i = 0; i < demands.length; i++) {
+							
+								println(demands[i])
+								TOTAL_PRICE_DEMAND = TOTAL_PRICE_DEMAND + (demands[i].crops[0].crop_pricing.srp*demands[i].qty)
+								list_demand = list_demand + `
+								<div class="x-padding x-row">
+									<div class="x-card x-row x-round x-padding">
+										<div class="x-row x-bottombar">
+											<div class="x-col s8">
+												<b class="x-tiny">`+demands[i].crops[0].name+`</b>
+											</div>
+											<div class="x-col s4">
+												<span class="x-tiny">Delivery Date<br>`+demands[i].proposed_delivery_date+`</span>
+											</div>
+										</div>
+										<div class="x-row">
+											<div class="x-col s3">
+												<img src="./img/products/crops/`+demands[i].crops[0].id+`.png" style="max-width: 100%;">
+											</div>
+											<div class="x-col s7">
+												<span class="x-tiny">Price per `+demands[i].crops[0].unit+` :</span><br>
+												<span class="x-tiny">Quantity/Volume :</span><br>
+											</div>
+											<div class="x-col s2">
+												<span class="x-tiny"><b>`+demands[i].crops[0].crop_pricing.srp+`</b></span><br>
+												<span class="x-tiny"><b>`+demands[i].qty+`</b></span><br>
+											</div>
+										</div>
+										<div class="x-row">
+											<button onclick="delete_demand('`+demands[i].id+`')" class="x-button x-orange x-round x-tiny x-right">
+												Remove to Crate
+											</button>
+										</div>
+									</div>
+								</div>
+								`
+							
+						}
+						$ID("total_price_demand").innerHTML = TOTAL_PRICE_DEMAND
+						$ID("demands").innerHTML = list_demand
+					},
+					headers:{
+						"Accept":"application/json",
+						"Content-Type":"application/json",
+						"Authorization" : "Bearer "+TOKEN
+					}
+				})
+			}
+			function summary_get_my_demands(res){
+				var demands = res
+				for_invoice = res
+				var list_demand = ""
+				println(demands)
+				println("================")
+				for (var i = 0; i < demands.length; i++) {
+					if(demands[i].fk_users_acc_id==user_id){
+						println(demands[i])
+						// TOTAL_PRICE_DEMAND = TOTAL_PRICE_DEMAND + (demands[i].crops[0].crop_pricing.srp*demands[i].qty)
+						var item_price = parseFloat(demands[i].crops[0].crop_pricing.srp)*parseFloat(demands[i].qty)
+						list_demand = list_demand + `
+						<div class="x-row">
+							<div class="x-border-dashed x-border-green x-row x-round" style="padding-left:10px;">
+								<div class="x-row">
+									<div class="x-col s8">
+										<b class="x-tiny">`+demands[i].crops[0].name+`</b>
+									</div>
+									<div class="x-col s4">
+										<span class="x-tiny">Delivery Date<br>`+demands[i].proposed_delivery_date+`</span>
+									</div>
+								</div>
+								<div class="x-row">
+									<div class="x-col s7">
+										<span class="x-tiny">Price per `+demands[i].crops[0].unit+` :</span><br>
+										<span class="x-tiny">Quantity/Volume :</span><br>
+										<span class="x-tiny">Item Total Price :</span><br>
+									</div>
+									<div class="x-col s2">
+										<span class="x-tiny"><b>`+demands[i].crops[0].crop_pricing.srp+`</b></span><br>
+										<span class="x-tiny"><b>`+demands[i].qty+`</b></span><br>
+										<span class="x-tiny"><b>`+item_price+`</b></span><br>
+									</div>
+								</div>
+							</div>
+						</div>
+						`
+					}else{
+						continue;
+					}
+				}
+				// $ID("total_price_demand").innerHTML = TOTAL_PRICE_DEMAND
+				$ID("summary_list").innerHTML = list_demand
+			
+			}
+
+			function delete_demand(ids){
+				// /delete/specific/demands
+				var del_struct = {
+					    "user_id": user_id,
+					    "fk_demands_id": ids
+				}
+				$send({
+					action : "http://agrihub.agriboost.ph/api/delete/specific/demands",
+					data : JSON.stringify(del_struct),
+					func : function(res){
+						$print(res)
+						goto("crate.html?data="+url_args['data'])
+
+					},
+					headers:{
+						"Accept":"application/json",
+						"Content-Type":"application/json",
+						"Authorization" : "Bearer "+TOKEN
+					}
+				})
+
+			}
+		</script>
+	</body>
+</html>

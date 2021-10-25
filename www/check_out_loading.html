@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login screen</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/Brorn.min.js"></script>
+
+		<link rel="stylesheet" href="css/x.css">
+		<link rel="stylesheet" href="css/other.css">
+		<link rel="stylesheet" href="css/loader.css">
+		<link rel="stylesheet" href="css/css">
+		<link rel="stylesheet" href="css/chip.css">
+		<link rel="stylesheet" href="css/dropzone.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<style type="text/css">
+			#head_band{
+				background-image: url(./img/products/headband.png);;
+				background-repeat: no-repeat;
+				background-size: auto;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
+	</head>
+	<body><br><br><br><br>
+		<center>
+			<img class="" src="img/products/agrimart.png" style="max-width: 30%;">
+			<br><br><br><br><br><br>
+			<div id="loading">
+				<span class="x-jumbo gr_text fa-spin fa fa-circle-o-notch"></span>
+			</div>
+			<div id="c_button" class="x-padding x-animate-top" style="display:none;">
+				<span class="x-text-green x-xxlarge gr_text">Success</span><br>
+				<span class="x-text-green">
+					Your pre-order has been placed
+				</span><br><br>
+				<button class="x-row x-block x-btn x-green x-round-large" onclick="to_market_demand()">Shop <span class="fa fa-shopping"></span></button><br>
+				<button class="x-row x-block x-btn x-blue x-round-large" onclick="to_check_out()">Check-out List <span class="fa fa-shopping"></span></button>
+			</div>
+		</center>
+	</body>
+	<script type="text/javascript">
+		let _USER_DATA_ = JSON.parse(url_args['data'])
+		let user_id = _USER_DATA_.users_details[0].id
+		let TOKEN = _USER_DATA_.token
+		setTimeout(showbutton, 1000);
+
+		function to_market_demand(){
+			goto("market_demand.html?data="+url_args['data'])
+		}
+		function to_check_out(){
+			goto("check_out.html?data="+url_args['data'])
+		}
+
+		function showbutton(){
+			$ID('loading').style.display = "none"
+			$ID('c_button').style.display = "block"
+		}
+	</script>
+</html>
