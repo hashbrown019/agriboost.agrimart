@@ -47,7 +47,7 @@
 			</div><br><br>
 			<div class="x-row x-padding">
 				<span class="x-text-green x-row" onclick="to_crate()"><span class="fa fa-shopping-cart"></span> My Crate</span><br>
-				<span class="x-text-green x-row" onclick=" to_check_out()"><span class="fa fa-ticket"></span> My Orders</span>
+				<span class="x-text-green x-row" onclick="to_check_out()"><span class="fa fa-ticket"></span> My Orders</span>
 				<hr>
 				<span class="x-text-green x-row"><span class="fa fa-question-circle-o"></span> Help</span><hr>
 				<span class="x-text-red x-row" onclick="to_login()"><span class="fa fa-power-off"></span> Sign Out</span>
@@ -239,6 +239,26 @@
 					</div>
 				</div>
 				<br>
+			</div>
+		</div>
+		<div class=" x-center x-block" style="width:100vw">
+			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;">
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-home" onclick="to_market_demand()"></span><br>
+					<!-- <span class="x-padding x-small ">Home</span> -->
+				</div>
+				<div class="x-col s3 x-container" onclick="to_crate()">
+					<span class="x-xlarge x-padding fa fa-shopping-basket"></span><br>
+					<!-- <span class="x-padding x-small ">Demands</span> -->
+				</div>
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-calculator" onclick="to_check_out()"></span><br>
+					<!-- <span class="x-padding x-small ">Home</span> -->
+				</div>
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-bell"></span><br>
+					<!-- <span class="x-padding x-small ">Logs</span> -->
+				</div>
 			</div>
 		</div>
 	</body>

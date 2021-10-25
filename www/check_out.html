@@ -67,11 +67,34 @@
 				<br>
 			</div>
 		</div>
+		<div class=" x-center x-block" style="width:100vw">
+			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;">
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-home" onclick="to_market_demand()"></span><br>
+					<!-- <span class="x-padding x-small ">Home</span> -->
+				</div>
+				<div class="x-col s3 x-container" onclick="to_crate()">
+					<span class="x-xlarge x-padding fa fa-shopping-basket"></span><br>
+					<!-- <span class="x-padding x-small ">Demands</span> -->
+				</div>
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-calculator" onclick="to_check_out()"></span><br>
+					<!-- <span class="x-padding x-small ">Home</span> -->
+				</div>
+				<div class="x-col s3 x-container">
+					<span class="x-xlarge x-padding fa fa-bell"></span><br>
+					<!-- <span class="x-padding x-small ">Logs</span> -->
+				</div>
+			</div>
+		</div>
 		<br><br>
 		<script type="text/javascript">
 			let _USER_DATA_ = JSON.parse(url_args['data'])
 			let user_id = _USER_DATA_.users_details[0].id
 			let TOKEN = _USER_DATA_.token
+
+			function to_check_out(){goto("check_out.html?data="+url_args['data'])}
+			function to_crate(){goto("crate.html?data="+url_args['data'])}
 
 			function to_market_demand(){
 				goto("market_demand.html?data="+url_args['data'])
