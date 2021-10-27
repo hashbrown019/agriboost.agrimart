@@ -104,8 +104,24 @@
 				</button>
 			</div>
 		</div>
+		
+		<div id="under_cons" class="x-modal"  style="display: none;">
+			<div class="x-modal-content x-round-large x-border x-border-green">
+				<span onclick="$ID('under_cons').style.display='none' "class="x-button x-display-topright x-round-large x-red ">close</span>
+				<div class="x-center x-padding x-row"><br>
+					<div class="x-container">
+						<img src="./img/dev.png" style="max-width: 100%">
+					</div>
+					<div class="x-container">
+						<h3 class="x-xxlarge">Get Excited!</h3>
+						<p class="x-large">This feature is comming soon.</p>
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
 		<div class=" x-center x-block" style="width:100vw">
-			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;">
+			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;width:100vw">
 				<div class="x-col s3 x-container">
 					<span class="x-xlarge x-padding fa fa-home" onclick="to_market_demand()"></span><br>
 					<!-- <span class="x-padding x-small ">Home</span> -->
@@ -119,7 +135,7 @@
 					<!-- <span class="x-padding x-small ">Home</span> -->
 				</div>
 				<div class="x-col s3 x-container">
-					<span class="x-xlarge x-padding fa fa-bell"></span><br>
+					<span class="x-xlarge x-padding fa fa-bell" onclick="under_dev()"></span><br>
 					<!-- <span class="x-padding x-small ">Logs</span> -->
 				</div>
 			</div>
@@ -128,12 +144,14 @@
 		<script type="text/javascript">
 			let PAGE = 0
 			let _USER_DATA_ = JSON.parse(url_args['data'])
-			let user_id = _USER_DATA_.users_details[0].id
+			let user_id = _USER_DATA_.users_details[0].fk_user_id
+			// let user_id = _USER_DATA_.users_details[0].id
 			let TOKEN = _USER_DATA_.token
 			let TOTAL_PRICE_DEMAND = 0
 			let for_invoice = undefined
 			set_user_det()
 			println(_USER_DATA_)
+			function under_dev(){$ID('under_cons').style.display='block'}
 			function to_check_out(){goto("check_out.html?data="+url_args['data'])}
 
 			function set_user_det(){

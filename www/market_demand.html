@@ -240,14 +240,30 @@
 						<span class="x-large">Choose Delivery Date</span>
 					</div>
 					<div class="x-row x-padding-large x-padding-large x-center">
-						<input onchange="date_choosen_del(this.value)" type="date" id="intro_date_btn" class="x-btn x-padding-large x-block x-large">
+						<input placeholder ="Select Date" onchange="date_choosen_del(this.value)" type="date" id="intro_date_btn" class="x-btn x-padding-large x-block x-large x-border x-border-green">
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
+
+		<div id="under_cons" class="x-modal"  style="display: none;">
+			<div class="x-modal-content x-round-large x-border x-border-green">
+				<span onclick="$ID('under_cons').style.display='none' "class="x-button x-display-topright x-round-large x-red ">close</span>
+				<div class="x-center x-padding x-row"><br>
+					<div class="x-container">
+						<img src="./img/dev.png" style="max-width: 100%">
+					</div>
+					<div class="x-container">
+						<h3 class="x-xxlarge">Get Excited!</h3>
+						<p class="x-large">This feature is comming soon.</p>
 					</div>
 				</div>
 				<br>
 			</div>
 		</div>
 		<div class=" x-center x-block" style="width:100vw">
-			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;">
+			<div class=" x-container x-center x-green" style=" z-index: 1;position: fixed;bottom: 0vh;width:100vw">
 				<div class="x-col s3 x-container">
 					<span class="x-xlarge x-padding fa fa-home" onclick="to_market_demand()"></span><br>
 					<!-- <span class="x-padding x-small ">Home</span> -->
@@ -261,7 +277,7 @@
 					<!-- <span class="x-padding x-small ">Home</span> -->
 				</div>
 				<div class="x-col s3 x-container">
-					<span class="x-xlarge x-padding fa fa-bell"></span><br>
+					<span class="x-xlarge x-padding fa fa-bell" onclick="under_dev()"></span><br>
 					<!-- <span class="x-padding x-small ">Logs</span> -->
 				</div>
 			</div>
@@ -281,8 +297,9 @@
 
 		let CROP_DATA
 		$ID('intro_date').style.display='block' 
-		println($ID('intro_date_btn').click())
+		$ID('intro_date_btn').value = "12/12/2002"
 
+		function under_dev(){$ID('under_cons').style.display='block'}
 		function to_check_out(){goto("check_out.html?data="+url_args['data'])}
 		function to_crate(){goto("crate.html?data="+url_args['data'])}
 		function to_login(){goto("Login_screen.html")}
